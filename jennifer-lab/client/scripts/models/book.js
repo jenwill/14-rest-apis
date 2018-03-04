@@ -55,14 +55,17 @@ var __API_URL__ = 'http://localhost:3000';
     .then(() => page('/'))
     .catch(errorCallback)
 
-  // COMMENT: Where is this method invoked? What is passed in as the 'book' argument when invoked? What callback will be invoked after Book.loadAll is invoked?
+  // DONE - COMMENT: Where is this method invoked? What is passed in as the 'book' argument when invoked? What callback will be invoked after Book.loadAll is invoked?
+  // This is called from bookView.initSearchFormPage. The 'book' argument is an object containing the data input by the user into the book search form. The callback that will be invoked is bookView.initSearchResultsPage.
   Book.find = (book, callback) =>
     $.get(`${__API_URL__}/api/v1/books/find`, book)
       .then(Book.loadAll)
       .then(callback)
       .catch(errorCallback)
 
-  // COMMENT: Where is this method invoked? How does it differ from the Book.find method, above?
+  // DONE - COMMENT: Where is this method invoked? How does it differ from the Book.find method, above?
+  //This is invoked from bookView.initSearchResultsPage, when the user clicks the button to choose that book to add to the book list. bookView.initSearchResultsPage sends the value of the data-bookid element, which was populated earlier with that book's ISBN number. 
+  // It differs from Book.find in that it finds one very specific book by ISBN number, instead of a list of books, and it then calls Book.create to add the book to the database and then redirect to the home page view, instead of displaying a list of books without adding them to the database.
   Book.findOne = isbn =>
     $.get(`${__API_URL__}/api/v1/books/find/${isbn}`)
     .then(Book.create)
